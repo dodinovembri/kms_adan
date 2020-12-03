@@ -51,21 +51,9 @@
 										<div class="header-nav-main header-nav-main-square header-nav-main-effect-2 header-nav-main-sub-effect-1">
 											<nav class="collapse">
 												<ul class="nav nav-pills" id="mainNav">
-													<li class="dropdown">
-														<a class="dropdown-item dropdown-toggle" href="index.html">
-															Home
-														</a>
-														<ul class="dropdown-menu">
-															<li>
-																<a class="dropdown-item" href="index.html">
-																	Landing Page
-																</a>
-															</li>
-														</ul>
-													</li>
 													<li class="dropdown dropdown-mega">
-														<a class="dropdown-item dropdown-toggle active" href="elements.html">
-															Elements
+														<a class="dropdown-item dropdown-toggle active" href="{{ url('/') }}">
+															Home
 														</a>
 													</li>
 													<li class="dropdown">
@@ -80,12 +68,7 @@
 														</a>
 													</li>
 													<li class="dropdown">
-														<a class="dropdown-item dropdown-toggle" href="#">
-															Portfolio
-														</a>
-													</li>
-													<li class="dropdown">
-														<a class="dropdown-item dropdown-toggle" href="#">
+														<a class="dropdown-item dropdown-toggle" href="{{ url('frontend/operational_vehicle/index') }}">
 															Operational Vehicle
 														</a>
 													</li>

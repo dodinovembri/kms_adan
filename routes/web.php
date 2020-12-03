@@ -31,6 +31,10 @@ Route::name('frontend.')->group(function () {
 		Route::post('frontend/knowledge_post/search', 'FrontendController@search')->name('search');
 		Route::get('frontend/knowledge_post/searchbyid/{id}', 'FrontendController@searchbyid')->name('searchbyid');
 	});		
+	Route::name('operational_vehicle.')->group(function () {
+		Route::get('frontend/operational_vehicle/index', 'Frontend\OperationalVehicleController@index')->name('index');
+		Route::get('frontend/operational_vehicle/show/{id}', 'Frontend\OperationalVehicleController@show')->name('show');
+	});		
 });
 
 Route::name('backend.')->group(function () {
