@@ -188,7 +188,8 @@ class KnowledgePostController extends Controller
 
         $data['dropdown'] = $dropdown;         
         $data['dropdown_option'] = $dropdown_option; 
-                
+        
+        $data['column_hidden'] = [1, 3, 6];
         // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
