@@ -128,7 +128,7 @@
                         </li> 
                         <li class="creat-btn">
                             <div class="nav-link">
-                                <a class=" btn btn-sm btn-soft-primary" href="{{ url('/') }}" role="button"></i>My Shop</a>
+                                <a class=" btn btn-sm btn-soft-primary" href="{{ url('/') }}" role="button"></i>Frontend</a>
                             </div>                                
                         </li>                           
                     </ul>

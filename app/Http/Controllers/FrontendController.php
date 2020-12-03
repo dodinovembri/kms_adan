@@ -3,56 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\CategoryModel;
-use App\Model\ProductModel;
-use App\Model\ProductReviewModel;
-use App\Model\PointModel;
+use App\Models\CategoryModel;
+use App\Models\KnowledgePostModel;
+use App\Models\KnowledgePostDetailModel;
 use Illuminate\Support\Facades\DB;
 
 
 class FrontendController extends Controller
 {
+    public $table = "knowledge_post";
+
     public function index()
     {
-        if (!empty(auth()->user()->id)) {
-            $cek_available_point = PointModel::where('user_id', auth()->user()->id)->first();
-            if (empty($cek_available_point)) {
-                $insert = new PointModel();
-                $insert->user_id = auth()->user()->id;
-                $insert->point = 0;
-                $insert->created_by = auth()->user()->id;
-                $insert->created_at =  date("Y-m-d H:i:s");   
-                $insert->save();
-            }            
-        }
-        $data['category'] = CategoryModel::all();
-        $data['product'] = ProductModel::all();    
-        return view('welcome', $data);
+        $data['category'] = CategoryModel::where('status', 1)->get();
+        $data['knowledge_post'] = KnowledgePostModel::where('status', 1)->get();
+        return view('frontend.index', $data);
     }
 
-    public function product_list($id)
-    {    	
-    	$data['category'] = CategoryModel::all();    	
-    	$data['product'] = ProductModel::where('id_category', $id)->get();
-        return view('welcome', $data);		
-    }
-
-    public function cart($id)
+    public function show($id)
     {
-        $data['category'] = CategoryModel::all();
-        $data['product'] = ProductModel::find($id);
-        $data['product_list'] = ProductModel::where('id_category', $id)->get();
-        // return $data['review'] = ProductReviewModel::where('product_id', $id)->get();
-        $data['review'] = DB::select("SELECT * FROM `product_review` JOIN users ON product_review.user_id = users.id WHERE product_id = $id");
-        $data['total_rating'] = DB::select("SELECT SUM(rating) AS total_rating FROM product_review WHERE product_id = $id");
-        return view('fe.cart', $data);
+        $data['category'] = CategoryModel::where('status', 1)->get();
+        $data['knowledge_post'] = KnowledgePostModel::find($id);
+        $data['knowledge_post_detail'] = KnowledgePostDetailModel::where('knowledge_post_id', $id)->get();
+        return view('frontend.show', $data);		
     }
 
     public function search(Request $request)
     {
+        // define table
+        $table = $this->table;
+        $search_params = $request->s;
+
         $data['category'] = CategoryModel::all();   
-        $data['search'] = $request->product_name;
-        $data['product'] = DB::select("SELECT *  FROM `product` WHERE `name` LIKE '%$request->product_name%'");
-        return view('welcome', $data);
+        $data['knowledge_post'] = DB::select("
+            SELECT *  FROM $table WHERE 
+            `knowledge_post_title` LIKE '%$search_params%' OR
+            `knowledge_post_short_description` LIKE '%$search_params%' OR
+            `knowledge_post_full_description` LIKE '%$search_params%'
+        ");
+        return view('frontend.index', $data);
+    }
+
+    public function searchbyid($id)
+    {
+        // define table
+        $table = $this->table;        
+
+        $data['category'] = CategoryModel::all();   
+        $data['knowledge_post'] = KnowledgePostModel::where('category_id', $id)->get();
+        return view('frontend.index', $data);
     }
 }
