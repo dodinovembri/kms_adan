@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\VehicleModel;
 use App\Models\VehicleTypeModel;
 use Illuminate\Support\Facades\Storage;
 
-class OperationalVehicleController extends Controller
+class OperationalVehicleDetailController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,13 +17,13 @@ class OperationalVehicleController extends Controller
      */
     public $table = "vehicle";
 
-    public $index = "backend/operational_vehicle/index";
-    public $create = "backend/operational_vehicle/create";
-    public $store = "backend/operational_vehicle/store";
+    public $index = "backend/vehicle/index";
+    public $create = "backend/vehicle/create";
+    public $store = "backend/vehicle/store";
     public $show = "backend/operational_vehicle_detail/index";
-    public $edit = "backend/operational_vehicle/edit";
-    public $update = "backend/operational_vehicle/update";
-    public $destroy = "backend/operational_vehicle/destroy";
+    public $edit = "backend/vehicle/edit";
+    public $update = "backend/vehicle/update";
+    public $destroy = "backend/vehicle/destroy";
 
     public $file_storage = "public/img/vehicle";
 
@@ -33,8 +32,13 @@ class OperationalVehicleController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index($id)
     {
+        session([
+            'vehicle_id' => $id            
+        ]);
+        $vehicle_id = session()->get('vehicle_id');
+
         // column will be hidden
         $data['column_hidden'] = [];
         // for breadcrumb
@@ -43,14 +47,19 @@ class OperationalVehicleController extends Controller
                 "text"=>"Dashboard", 
                 "link"=>"home", 
                 "is_active"=>"inactive"
-            ),
+            ),  
             "operational_vehicle"=>array(
                 "text"=>"Operational Vehicle", 
+                "link"=>"backend/operational_vehicle/index", 
+                "is_active"=>"inactive"
+            ),                      
+            "operational_vehicle_detail"=>array(
+                "text"=>"Operational Vehicle Detail", 
                 "link"=>"", 
                 "is_active"=>"active"
             )
         );
-        $data['title'] = "Operational Vehicle";
+        $data['title'] = "Vehicle";
 
         // for route link
         $data['index'] = $this->index;
@@ -64,9 +73,9 @@ class OperationalVehicleController extends Controller
         $data['table_field'] = DB::select("DESCRIBE $table");
         $data['field_break'] = "created_at";
         $data['text_add'] = "Add New";
-        $data['table_data'] = VehicleModel::all();
+        // $data['table_data'] = VehicleDetailModel::all();
 
-        return view('backend.single_page.index', $data);
+        return view('backend.vehicle_detail.index', $data);
     }
 
     /**
@@ -96,18 +105,18 @@ class OperationalVehicleController extends Controller
                 "link"=>"backend", 
                 "is_active"=>"inactive"
             ),
-            "operational_vehicle"=>array(
-                "text"=>"Operational Vehicle", 
+            "vehicle"=>array(
+                "text"=>"Vehicle", 
                 "link"=>$this->index, 
                 "is_active"=>"inactive"
             ),
-            "create_operational_vehicle"=>array(
-                "text"=>"Create Operational Vehicle", 
+            "create_vehicle"=>array(
+                "text"=>"Create Vehicle", 
                 "link"=>"#", 
                 "is_active"=>"active"
             )
         );
-        $data['title'] = "Create Operational Vehicle";
+        $data['title'] = "Create Vehicle";
 
         $data['store'] = $this->store;
         $data['index'] = $this->index;
@@ -148,7 +157,7 @@ class OperationalVehicleController extends Controller
             $count = count($arr_field); 
         }
 
-        $insert = new VehicleModel();
+        $insert = new VehicleDetailModel();
         for ($i=0; $i < $count; $i++) { 
             $text_type = $arr_field_type[$i];
             $text_check = substr($text_type,0,3);
@@ -204,18 +213,18 @@ class OperationalVehicleController extends Controller
                 "link"=>"backend", 
                 "is_active"=>"inactive"
             ),
-            "operational_vehicle"=>array(
-                "text"=>"Operational Vehicle", 
+            "vehicle"=>array(
+                "text"=>"Vehicle", 
                 "link"=>$this->index, 
                 "is_active"=>"inactive"
             ),
-            "edit_operational_vehicle"=>array(
-                "text"=>"Edit Operational Vehicle", 
+            "edit_vehicle"=>array(
+                "text"=>"Edit Vehicle", 
                 "link"=>"", 
                 "is_active"=>"active"
             )            
         );
-        $data['title'] = "Edit Operational Vehicle";
+        $data['title'] = "Edit Vehicle";
         $data['update'] = $this->update;
         $data['index'] = $this->index;
 
@@ -226,7 +235,7 @@ class OperationalVehicleController extends Controller
         $data['field_break'] = "created_at";
         $data['field_'] = "created_at";
 
-        $data['table_content'] = VehicleModel::find($id);
+        $data['table_content'] = VehicleDetailModel::find($id);
 
         return view('backend.single_page.edit', $data);
     }
@@ -261,7 +270,7 @@ class OperationalVehicleController extends Controller
             $count = count($arr_field); 
         }
 
-        $update = VehicleModel::find($id);
+        $update = VehicleDetailModel::find($id);
         for ($i=0; $i < $count; $i++) { 
             $text_type = $arr_field_type[$i];
             $text_check = substr($text_type,0,3);
@@ -292,7 +301,7 @@ class OperationalVehicleController extends Controller
      */
     public function destroy($id)
     {
-        $findtodelete = VehicleModel::find($id);
+        $findtodelete = VehicleDetailModel::find($id);
         $findtodelete->delete();
 
         $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 

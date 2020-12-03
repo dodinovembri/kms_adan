@@ -5,28 +5,27 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\VehicleModel;
-use App\Models\VehicleTypeModel;
+use App\Models\VehicleSuspentionModel;
 use Illuminate\Support\Facades\Storage;
 
-class VehicleController extends Controller
+class VehicleSuspentionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public $table = "vehicle";
+    public $table = "vehicle_suspention";
 
-    public $index = "backend/vehicle/index";
-    public $create = "backend/vehicle/create";
-    public $store = "backend/vehicle/store";
-    public $show = "backend/vehicle_detail/index";
-    public $edit = "backend/vehicle/edit";
-    public $update = "backend/vehicle/update";
-    public $destroy = "backend/vehicle/destroy";
+    public $index = "backend/vehicle_suspention/index";
+    public $create = "backend/vehicle_suspention/create";
+    public $store = "backend/vehicle_suspention/store";
+    public $show = "backend/vehicle_suspention/show";
+    public $edit = "backend/vehicle_suspention/edit";
+    public $update = "backend/vehicle_suspention/update";
+    public $destroy = "backend/vehicle_suspention/destroy";
 
-    public $file_storage = "public/img/vehicle";
+    public $file_storage = "public/img/vehicle_suspention";
 
     public function __construct()
     {
@@ -34,23 +33,36 @@ class VehicleController extends Controller
     }
 
     public function index()
-    {
+    {        
+        $vehicle_id = session()->get('vehicle_id');
+
         // column will be hidden
         $data['column_hidden'] = [];
+
         // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
                 "text"=>"Dashboard", 
                 "link"=>"home", 
                 "is_active"=>"inactive"
+            ),  
+            "operational_vehicle"=>array(
+                "text"=>"Operational Vehicle", 
+                "link"=>"backend/operational_vehicle/index", 
+                "is_active"=>"inactive"
+            ),                      
+            "operational_vehicle_detail"=>array(
+                "text"=>"Operational Vehicle Detail", 
+                "link"=>"backend/operational_vehicle_detail/index/".$vehicle_id, 
+                "is_active"=>"inactive"
             ),
-            "vehicle"=>array(
-                "text"=>"Vehicle", 
+            "vehicle_suspention"=>array(
+                "text"=>"Vehicle Suspention", 
                 "link"=>"", 
                 "is_active"=>"active"
-            )
+            )            
         );
-        $data['title'] = "Vehicle";
+        $data['title'] = "Vehicle Suspention";
 
         // for route link
         $data['index'] = $this->index;
@@ -64,7 +76,7 @@ class VehicleController extends Controller
         $data['table_field'] = DB::select("DESCRIBE $table");
         $data['field_break'] = "created_at";
         $data['text_add'] = "Add New";
-        $data['table_data'] = VehicleModel::all();
+        $data['table_data'] = VehicleSuspentionModel::where('vehicle_id', $vehicle_id)->get();
 
         return view('backend.single_page.index', $data);
     }
@@ -76,41 +88,41 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        // column will be hidden
-        $data['column_hidden'] = [];
-
-        // define dropdown
-        $dropdown[0] = VehicleTypeModel::where('status', 1)->get();
-        $dropdown_option[0] = "vehicle_type_name";
-
-        $data['dropdown'] = $dropdown;         
-        $data['dropdown_option'] = $dropdown_option;    
-
-        // column will be hidden
-        $data['column_hidden'] = [];
-
+        $data['column_hidden'] = [1];
+        $vehicle_id = session()->get('vehicle_id');  
         // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
                 "text"=>"Dashboard", 
-                "link"=>"backend", 
+                "link"=>"home", 
+                "is_active"=>"inactive"
+            ),  
+            "operational_vehicle"=>array(
+                "text"=>"Operational Vehicle", 
+                "link"=>"backend/operational_vehicle/index", 
+                "is_active"=>"inactive"
+            ),                      
+            "operational_vehicle_detail"=>array(
+                "text"=>"Operational Vehicle Detail", 
+                "link"=>"backend/operational_vehicle_detail/index/".$vehicle_id, 
                 "is_active"=>"inactive"
             ),
-            "vehicle"=>array(
-                "text"=>"Vehicle", 
-                "link"=>$this->index, 
+            "vehicle_suspention"=>array(
+                "text"=>"Vehicle Suspention", 
+                "link"=>"backend/vehicle_suspention/index",
                 "is_active"=>"inactive"
             ),
-            "create_vehicle"=>array(
-                "text"=>"Create Vehicle", 
-                "link"=>"#", 
+            "create_vehicle_suspention"=>array(
+                "text"=>"Create Vehicle Suspention", 
+                "link"=>"", 
                 "is_active"=>"active"
-            )
+            )                        
         );
-        $data['title'] = "Create Vehicle";
+        $data['title'] = "Create Vehicle Suspention";
 
         $data['store'] = $this->store;
         $data['index'] = $this->index;
+
         $table = $this->table;
         $data['table_field'] = DB::select("DESCRIBE $table");
         $data['field_first'] = "id";
@@ -130,7 +142,7 @@ class VehicleController extends Controller
         $table = $this->table;
         $table_field = DB::select("DESCRIBE $table");
         $field_break = "created_at";
-        $field_first = "id";
+        $field_first = "id";    
         $column_hidden = [];
 
         foreach ($table_field as $key => $value) {
@@ -146,9 +158,9 @@ class VehicleController extends Controller
             $arr_field[] = $value->Field;
             $arr_field_type[] = $value->Type;
             $count = count($arr_field); 
-        }
+        }        
 
-        $insert = new VehicleModel();
+        $insert = new VehicleSuspentionModel();
         for ($i=0; $i < $count; $i++) { 
             $text_type = $arr_field_type[$i];
             $text_check = substr($text_type,0,3);
@@ -162,7 +174,7 @@ class VehicleController extends Controller
                 }                
             }else{
                 $field_db = $arr_field[$i];            
-                $insert->$field_db = $request->$field_db;            
+                $insert->$field_db = $i==0 ? session()->get('vehicle_id') : $request->$field_db;            
             }           
         }        
         $insert->save();
@@ -179,7 +191,7 @@ class VehicleController extends Controller
      */
     public function show($id)
     {
-        // 
+        //
     }
 
     /**
@@ -190,34 +202,39 @@ class VehicleController extends Controller
      */
     public function edit($id)
     {
-        // define dropdown
-        $dropdown[0] = VehicleTypeModel::where('status', 1)->get();
-        $dropdown_option[0] = "vehicle_type_name";
-
-        $data['dropdown'] = $dropdown;         
-        $data['dropdown_option'] = $dropdown_option; 
+        $vehicle_id = session()->get('vehicle_id');  
                 
         // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
                 "text"=>"Dashboard", 
-                "link"=>"backend", 
+                "link"=>"home", 
+                "is_active"=>"inactive"
+            ),  
+            "operational_vehicle"=>array(
+                "text"=>"Operational Vehicle", 
+                "link"=>"backend/operational_vehicle/index", 
+                "is_active"=>"inactive"
+            ),                      
+            "operational_vehicle_detail"=>array(
+                "text"=>"Operational Vehicle Detail", 
+                "link"=>"backend/operational_vehicle_detail/index/".$vehicle_id, 
                 "is_active"=>"inactive"
             ),
-            "vehicle"=>array(
-                "text"=>"Vehicle", 
-                "link"=>$this->index, 
+            "vehicle_suspention"=>array(
+                "text"=>"Vehicle Suspention", 
+                "link"=>"backend/vehicle_suspention/index",
                 "is_active"=>"inactive"
             ),
-            "edit_vehicle"=>array(
-                "text"=>"Edit Vehicle", 
+            "edit_vehicle_suspention"=>array(
+                "text"=>"Edit Vehicle Suspention", 
                 "link"=>"", 
                 "is_active"=>"active"
-            )            
+            )                        
         );
-        $data['title'] = "Edit Vehicle";
+        $data['title'] = "Edit Vehicle Suspention";
         $data['update'] = $this->update;
-        $data['index'] = $this->index;
+        $data['index'] = url($this->index, session()->get('vehicle_id'));
 
         $data['id'] = $id;
         $table = $this->table;
@@ -226,7 +243,7 @@ class VehicleController extends Controller
         $data['field_break'] = "created_at";
         $data['field_'] = "created_at";
 
-        $data['table_content'] = VehicleModel::find($id);
+        $data['table_content'] = VehicleSuspentionModel::find($id);
 
         return view('backend.single_page.edit', $data);
     }
@@ -261,7 +278,7 @@ class VehicleController extends Controller
             $count = count($arr_field); 
         }
 
-        $update = VehicleModel::find($id);
+        $update = VehicleSuspentionModel::find($id);
         for ($i=0; $i < $count; $i++) { 
             $text_type = $arr_field_type[$i];
             $text_check = substr($text_type,0,3);
@@ -292,10 +309,10 @@ class VehicleController extends Controller
      */
     public function destroy($id)
     {
-        $findtodelete = VehicleModel::find($id);
+        $findtodelete = VehicleSuspentionModel::find($id);
         $findtodelete->delete();
 
         $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 
-        return redirect(url($this->index))->with("info", "Success deleted $result !");        
+        return redirect(url($this->index, session()->get('vehicle_id')))->with("info", "Success deleted $result !");        
     }
 }

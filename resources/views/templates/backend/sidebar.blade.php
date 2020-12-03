@@ -32,11 +32,10 @@
                         <a href="javascript: void(0);"><i data-feather="book" class="align-self-center menu-icon"></i><span>Master</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li class="nav-item"><a class="nav-link" href="{{ url('backend/category/index') }}"><i class="ti-control-record"></i>Category</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/dimension/index') }}"><i class="ti-control-record"></i>Dimension</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/meassure/index') }}"><i class="ti-control-record"></i>Meassure</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url('backend/driver_type/index') }}"><i class="ti-control-record"></i>Driver Type</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url('backend/fuel_type/index') }}"><i class="ti-control-record"></i>Fuel Type</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/vehicle_type/index') }}"><i class="ti-control-record"></i>Vehicle Type</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/vehicle/index') }}"><i class="ti-control-record"></i>Vehicle</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/vehicle_type/index') }}"><i class="ti-control-record"></i>Vehicle Type</a></li>  
                         </ul>
                     </li> 
 

@@ -5,28 +5,28 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\DimensionModel;
+use App\Models\MeassureModel;
 use App\Models\CategoryModel;
 use Illuminate\Support\Facades\Storage;
 
-class DimensionController extends Controller
+class MeassureController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public $table = "dimension";
+    public $table = "meassure";
 
-    public $index = "backend/dimension/index";
-    public $create = "backend/dimension/create";
-    public $store = "backend/dimension/store";
-    public $show = "backend/dimension_detail/index";
-    public $edit = "backend/dimension/edit";
-    public $update = "backend/dimension/update";
-    public $destroy = "backend/dimension/destroy";
+    public $index = "backend/meassure/index";
+    public $create = "backend/meassure/create";
+    public $store = "backend/meassure/store";
+    public $show = "backend/meassure_detail/index";
+    public $edit = "backend/meassure/edit";
+    public $update = "backend/meassure/update";
+    public $destroy = "backend/meassure/destroy";
 
-    public $file_storage = "public/img/dimension";
+    public $file_storage = "public/img/meassure";
 
     public function __construct()
     {
@@ -44,13 +44,13 @@ class DimensionController extends Controller
                 "link"=>"home", 
                 "is_active"=>"inactive"
             ),
-            "dimension"=>array(
-                "text"=>"Dimension", 
+            "meassure"=>array(
+                "text"=>"Meassure", 
                 "link"=>"", 
                 "is_active"=>"active"
             )
         );
-        $data['title'] = "Dimension";
+        $data['title'] = "Meassure";
 
         // for route link
         $data['index'] = $this->index;
@@ -64,7 +64,7 @@ class DimensionController extends Controller
         $data['table_field'] = DB::select("DESCRIBE $table");
         $data['field_break'] = "created_at";
         $data['text_add'] = "Add New";
-        $data['table_data'] = DimensionModel::all();
+        $data['table_data'] = MeassureModel::all();
 
         return view('backend.single_page.index', $data);
     }
@@ -96,18 +96,18 @@ class DimensionController extends Controller
                 "link"=>"backend", 
                 "is_active"=>"inactive"
             ),
-            "dimension"=>array(
-                "text"=>"Dimension", 
+            "meassure"=>array(
+                "text"=>"Meassure", 
                 "link"=>$this->index, 
                 "is_active"=>"inactive"
             ),
-            "create_dimension"=>array(
-                "text"=>"Create Dimension", 
+            "create_meassure"=>array(
+                "text"=>"Create Meassure", 
                 "link"=>"#", 
                 "is_active"=>"active"
             )
         );
-        $data['title'] = "Create Dimension";
+        $data['title'] = "Create Meassure";
 
         $data['store'] = $this->store;
         $data['index'] = $this->index;
@@ -148,7 +148,7 @@ class DimensionController extends Controller
             $count = count($arr_field); 
         }
 
-        $insert = new DimensionModel();
+        $insert = new MeassureModel();
         for ($i=0; $i < $count; $i++) { 
             $text_type = $arr_field_type[$i];
             $text_check = substr($text_type,0,3);
@@ -204,18 +204,18 @@ class DimensionController extends Controller
                 "link"=>"backend", 
                 "is_active"=>"inactive"
             ),
-            "dimension"=>array(
-                "text"=>"Dimension", 
+            "meassure"=>array(
+                "text"=>"Meassure", 
                 "link"=>$this->index, 
                 "is_active"=>"inactive"
             ),
-            "edit_dimension"=>array(
-                "text"=>"Edit Dimension", 
+            "edit_meassure"=>array(
+                "text"=>"Edit Meassure", 
                 "link"=>"", 
                 "is_active"=>"active"
             )            
         );
-        $data['title'] = "Edit Dimension";
+        $data['title'] = "Edit Meassure";
         $data['update'] = $this->update;
         $data['index'] = $this->index;
 
@@ -226,7 +226,7 @@ class DimensionController extends Controller
         $data['field_break'] = "created_at";
         $data['field_'] = "created_at";
 
-        $data['table_content'] = DimensionModel::find($id);
+        $data['table_content'] = MeassureModel::find($id);
 
         return view('backend.single_page.edit', $data);
     }
@@ -261,7 +261,7 @@ class DimensionController extends Controller
             $count = count($arr_field); 
         }
 
-        $update = DimensionModel::find($id);
+        $update = MeassureModel::find($id);
         for ($i=0; $i < $count; $i++) { 
             $text_type = $arr_field_type[$i];
             $text_check = substr($text_type,0,3);
@@ -292,7 +292,7 @@ class DimensionController extends Controller
      */
     public function destroy($id)
     {
-        $findtodelete = DimensionModel::find($id);
+        $findtodelete = MeassureModel::find($id);
         $findtodelete->delete();
 
         $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 

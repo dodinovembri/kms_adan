@@ -70,14 +70,14 @@ Route::name('backend.')->group(function () {
 		Route::post('backend/knowledge_post_detail/update/{id}', 'Backend\KnowledgePostDetailController@update')->name('update');
 		Route::get('backend/knowledge_post_detail/destroy/{id}', 'Backend\KnowledgePostDetailController@destroy')->name('destroy');
 	});			
-	Route::name('dimension.')->group(function () {
-		Route::get('backend/dimension/index', 'Backend\DimensionController@index')->name('index');
-		Route::get('backend/dimension/create', 'Backend\DimensionController@create')->name('create');
-		Route::post('backend/dimension/store', 'Backend\DimensionController@store')->name('store');
-		Route::get('backend/dimension/show/{id}', 'Backend\DimensionController@show')->name('show');
-		Route::get('backend/dimension/edit/{id}', 'Backend\DimensionController@edit')->name('edit');
-		Route::post('backend/dimension/update/{id}', 'Backend\DimensionController@update')->name('update');
-		Route::get('backend/dimension/destroy/{id}', 'Backend\DimensionController@destroy')->name('destroy');
+	Route::name('meassure.')->group(function () {
+		Route::get('backend/meassure/index', 'Backend\MeassureController@index')->name('index');
+		Route::get('backend/meassure/create', 'Backend\MeassureController@create')->name('create');
+		Route::post('backend/meassure/store', 'Backend\MeassureController@store')->name('store');
+		Route::get('backend/meassure/show/{id}', 'Backend\MeassureController@show')->name('show');
+		Route::get('backend/meassure/edit/{id}', 'Backend\MeassureController@edit')->name('edit');
+		Route::post('backend/meassure/update/{id}', 'Backend\MeassureController@update')->name('update');
+		Route::get('backend/meassure/destroy/{id}', 'Backend\MeassureController@destroy')->name('destroy');
 	});
 	Route::name('driver_type.')->group(function () {
 		Route::get('backend/driver_type/index', 'Backend\DriverTypeController@index')->name('index');
@@ -132,5 +132,113 @@ Route::name('backend.')->group(function () {
 		Route::get('backend/operational_vehicle/edit/{id}', 'Backend\OperationalVehicleController@edit')->name('edit');
 		Route::post('backend/operational_vehicle/update/{id}', 'Backend\OperationalVehicleController@update')->name('update');
 		Route::get('backend/operational_vehicle/destroy/{id}', 'Backend\OperationalVehicleController@destroy')->name('destroy');
+	});	
+	Route::name('operational_vehicle_detail.')->group(function () {
+		Route::get('backend/operational_vehicle_detail/index/{id}', 'Backend\OperationalVehicleDetailController@index')->name('index');
+		Route::get('backend/operational_vehicle_detail/create', 'Backend\OperationalVehicleDetailController@create')->name('create');
+		Route::post('backend/operational_vehicle_detail/store', 'Backend\OperationalVehicleDetailController@store')->name('store');
+		Route::get('backend/operational_vehicle_detail/show/{id}', 'Backend\OperationalVehicleDetailController@show')->name('show');
+		Route::get('backend/operational_vehicle_detail/edit/{id}', 'Backend\OperationalVehicleDetailController@edit')->name('edit');
+		Route::post('backend/operational_vehicle_detail/update/{id}', 'Backend\OperationalVehicleDetailController@update')->name('update');
+		Route::get('backend/operational_vehicle_detail/destroy/{id}', 'Backend\OperationalVehicleDetailController@destroy')->name('destroy');
+	});	
+	Route::name('vehicle_dimension.')->group(function () {
+		Route::get('backend/vehicle_dimension/index', 'Backend\VehicleDimensionController@index')->name('index');
+		Route::get('backend/vehicle_dimension/create', 'Backend\VehicleDimensionController@create')->name('create');
+		Route::post('backend/vehicle_dimension/store', 'Backend\VehicleDimensionController@store')->name('store');
+		Route::get('backend/vehicle_dimension/show/{id}', 'Backend\VehicleDimensionController@show')->name('show');
+		Route::get('backend/vehicle_dimension/edit/{id}', 'Backend\VehicleDimensionController@edit')->name('edit');
+		Route::post('backend/vehicle_dimension/update/{id}', 'Backend\VehicleDimensionController@update')->name('update');
+		Route::get('backend/vehicle_dimension/destroy/{id}', 'Backend\VehicleDimensionController@destroy')->name('destroy');
+	});	
+	Route::name('vehicle_engine.')->group(function () {
+		Route::get('backend/vehicle_engine/index', 'Backend\VehicleEngineController@index')->name('index');
+		Route::get('backend/vehicle_engine/create', 'Backend\VehicleEngineController@create')->name('create');
+		Route::post('backend/vehicle_engine/store', 'Backend\VehicleEngineController@store')->name('store');
+		Route::get('backend/vehicle_engine/show/{id}', 'Backend\VehicleEngineController@show')->name('show');
+		Route::get('backend/vehicle_engine/edit/{id}', 'Backend\VehicleEngineController@edit')->name('edit');
+		Route::post('backend/vehicle_engine/update/{id}', 'Backend\VehicleEngineController@update')->name('update');
+		Route::get('backend/vehicle_engine/destroy/{id}', 'Backend\VehicleEngineController@destroy')->name('destroy');
+	});	
+	Route::name('vehicle_performance.')->group(function () {
+		Route::get('backend/vehicle_performance/index', 'Backend\VehiclePerformanceController@index')->name('index');
+		Route::get('backend/vehicle_performance/create', 'Backend\VehiclePerformanceController@create')->name('create');
+		Route::post('backend/vehicle_performance/store', 'Backend\VehiclePerformanceController@store')->name('store');
+		Route::get('backend/vehicle_performance/show/{id}', 'Backend\VehiclePerformanceController@show')->name('show');
+		Route::get('backend/vehicle_performance/edit/{id}', 'Backend\VehiclePerformanceController@edit')->name('edit');
+		Route::post('backend/vehicle_performance/update/{id}', 'Backend\VehiclePerformanceController@update')->name('update');
+		Route::get('backend/vehicle_performance/destroy/{id}', 'Backend\VehiclePerformanceController@destroy')->name('destroy');
+	});	
+	Route::name('vehicle_suspention.')->group(function () {
+		Route::get('backend/vehicle_suspention/index', 'Backend\VehicleSuspentionController@index')->name('index');
+		Route::get('backend/vehicle_suspention/create', 'Backend\VehicleSuspentionController@create')->name('create');
+		Route::post('backend/vehicle_suspention/store', 'Backend\VehicleSuspentionController@store')->name('store');
+		Route::get('backend/vehicle_suspention/show/{id}', 'Backend\VehicleSuspentionController@show')->name('show');
+		Route::get('backend/vehicle_suspention/edit/{id}', 'Backend\VehicleSuspentionController@edit')->name('edit');
+		Route::post('backend/vehicle_suspention/update/{id}', 'Backend\VehicleSuspentionController@update')->name('update');
+		Route::get('backend/vehicle_suspention/destroy/{id}', 'Backend\VehicleSuspentionController@destroy')->name('destroy');
 	});		
+	Route::name('vehicle_velg_tire.')->group(function () {
+		Route::get('backend/vehicle_velg_tire/index', 'Backend\VehicleVelgTireController@index')->name('index');
+		Route::get('backend/vehicle_velg_tire/create', 'Backend\VehicleVelgTireController@create')->name('create');
+		Route::post('backend/vehicle_velg_tire/store', 'Backend\VehicleVelgTireController@store')->name('store');
+		Route::get('backend/vehicle_velg_tire/show/{id}', 'Backend\VehicleVelgTireController@show')->name('show');
+		Route::get('backend/vehicle_velg_tire/edit/{id}', 'Backend\VehicleVelgTireController@edit')->name('edit');
+		Route::post('backend/vehicle_velg_tire/update/{id}', 'Backend\VehicleVelgTireController@update')->name('update');
+		Route::get('backend/vehicle_velg_tire/destroy/{id}', 'Backend\VehicleVelgTireController@destroy')->name('destroy');
+	});		
+	Route::name('vehicle_active_safety.')->group(function () {
+		Route::get('backend/vehicle_active_safety/index', 'Backend\VehicleActiveSafetyController@index')->name('index');
+		Route::get('backend/vehicle_active_safety/create', 'Backend\VehicleActiveSafetyController@create')->name('create');
+		Route::post('backend/vehicle_active_safety/store', 'Backend\VehicleActiveSafetyController@store')->name('store');
+		Route::get('backend/vehicle_active_safety/show/{id}', 'Backend\VehicleActiveSafetyController@show')->name('show');
+		Route::get('backend/vehicle_active_safety/edit/{id}', 'Backend\VehicleActiveSafetyController@edit')->name('edit');
+		Route::post('backend/vehicle_active_safety/update/{id}', 'Backend\VehicleActiveSafetyController@update')->name('update');
+		Route::get('backend/vehicle_active_safety/destroy/{id}', 'Backend\VehicleActiveSafetyController@destroy')->name('destroy');
+	});	
+	Route::name('vehicle_passive_safety.')->group(function () {
+		Route::get('backend/vehicle_passive_safety/index', 'Backend\VehiclePassiveSafetyController@index')->name('index');
+		Route::get('backend/vehicle_passive_safety/create', 'Backend\VehiclePassiveSafetyController@create')->name('create');
+		Route::post('backend/vehicle_passive_safety/store', 'Backend\VehiclePassiveSafetyController@store')->name('store');
+		Route::get('backend/vehicle_passive_safety/show/{id}', 'Backend\VehiclePassiveSafetyController@show')->name('show');
+		Route::get('backend/vehicle_passive_safety/edit/{id}', 'Backend\VehiclePassiveSafetyController@edit')->name('edit');
+		Route::post('backend/vehicle_passive_safety/update/{id}', 'Backend\VehiclePassiveSafetyController@update')->name('update');
+		Route::get('backend/vehicle_passive_safety/destroy/{id}', 'Backend\VehiclePassiveSafetyController@destroy')->name('destroy');
+	});		
+	Route::name('vehicle_security.')->group(function () {
+		Route::get('backend/vehicle_security/index', 'Backend\VehicleSecurityController@index')->name('index');
+		Route::get('backend/vehicle_security/create', 'Backend\VehicleSecurityController@create')->name('create');
+		Route::post('backend/vehicle_security/store', 'Backend\VehicleSecurityController@store')->name('store');
+		Route::get('backend/vehicle_security/show/{id}', 'Backend\VehicleSecurityController@show')->name('show');
+		Route::get('backend/vehicle_security/edit/{id}', 'Backend\VehicleSecurityController@edit')->name('edit');
+		Route::post('backend/vehicle_security/update/{id}', 'Backend\VehicleSecurityController@update')->name('update');
+		Route::get('backend/vehicle_security/destroy/{id}', 'Backend\VehicleSecurityController@destroy')->name('destroy');
+	});	
+	Route::name('vehicle_comfort.')->group(function () {
+		Route::get('backend/vehicle_comfort/index', 'Backend\VehicleComfortController@index')->name('index');
+		Route::get('backend/vehicle_comfort/create', 'Backend\VehicleComfortController@create')->name('create');
+		Route::post('backend/vehicle_comfort/store', 'Backend\VehicleComfortController@store')->name('store');
+		Route::get('backend/vehicle_comfort/show/{id}', 'Backend\VehicleComfortController@show')->name('show');
+		Route::get('backend/vehicle_comfort/edit/{id}', 'Backend\VehicleComfortController@edit')->name('edit');
+		Route::post('backend/vehicle_comfort/update/{id}', 'Backend\VehicleComfortController@update')->name('update');
+		Route::get('backend/vehicle_comfort/destroy/{id}', 'Backend\VehicleComfortController@destroy')->name('destroy');
+	});		
+	Route::name('vehicle_exterior.')->group(function () {
+		Route::get('backend/vehicle_exterior/index', 'Backend\VehicleExteriorController@index')->name('index');
+		Route::get('backend/vehicle_exterior/create', 'Backend\VehicleExteriorController@create')->name('create');
+		Route::post('backend/vehicle_exterior/store', 'Backend\VehicleExteriorController@store')->name('store');
+		Route::get('backend/vehicle_exterior/show/{id}', 'Backend\VehicleExteriorController@show')->name('show');
+		Route::get('backend/vehicle_exterior/edit/{id}', 'Backend\VehicleExteriorController@edit')->name('edit');
+		Route::post('backend/vehicle_exterior/update/{id}', 'Backend\VehicleExteriorController@update')->name('update');
+		Route::get('backend/vehicle_exterior/destroy/{id}', 'Backend\VehicleExteriorController@destroy')->name('destroy');
+	});
+	Route::name('vehicle_communication.')->group(function () {
+		Route::get('backend/vehicle_communication/index', 'Backend\VehicleCommunicationController@index')->name('index');
+		Route::get('backend/vehicle_communication/create', 'Backend\VehicleCommunicationController@create')->name('create');
+		Route::post('backend/vehicle_communication/store', 'Backend\VehicleCommunicationController@store')->name('store');
+		Route::get('backend/vehicle_communication/show/{id}', 'Backend\VehicleCommunicationController@show')->name('show');
+		Route::get('backend/vehicle_communication/edit/{id}', 'Backend\VehicleCommunicationController@edit')->name('edit');
+		Route::post('backend/vehicle_communication/update/{id}', 'Backend\VehicleCommunicationController@update')->name('update');
+		Route::get('backend/vehicle_communication/destroy/{id}', 'Backend\VehicleCommunicationController@destroy')->name('destroy');
+	});										
 });

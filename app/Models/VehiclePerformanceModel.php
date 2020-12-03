@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DimensionModel extends Model
+class VehiclePerformanceModel extends Model
 {
-    public $table ='dimension';
+    public $table ='vehicle_performance';
     public $guarded ='[]';
 }
