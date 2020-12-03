@@ -27,6 +27,7 @@ class MeassureController extends Controller
     public $destroy = "backend/meassure/destroy";
 
     public $file_storage = "public/img/meassure";
+    public $column_hidden = [];
 
     public function __construct()
     {
@@ -35,8 +36,7 @@ class MeassureController extends Controller
 
     public function index()
     {
-        // column will be hidden
-        $data['column_hidden'] = [];
+        $data['column_hidden'] = $this->column_hidden;
         // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
@@ -76,8 +76,7 @@ class MeassureController extends Controller
      */
     public function create()
     {
-        // column will be hidden
-        $data['column_hidden'] = [];
+        $data['column_hidden'] = $this->column_hidden;
 
         // define dropdown
         $dropdown[0] = CategoryModel::where('status', 1)->get();
@@ -190,7 +189,7 @@ class MeassureController extends Controller
      */
     public function edit($id)
     {
-        // define dropdown
+        $data['column_hidden'] = $this->column_hidden;
         $dropdown[0] = CategoryModel::where('status', 1)->get();
         $dropdown_option[0] = "category_name";
 

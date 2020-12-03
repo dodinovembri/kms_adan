@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CategoryModel;
 use App\Models\KnowledgePostModel;
 use App\Models\KnowledgePostDetailModel;
+use App\Models\SubscriberModel;;
 use Illuminate\Support\Facades\DB;
 
 
@@ -52,5 +53,14 @@ class FrontendController extends Controller
         $data['category'] = CategoryModel::all();   
         $data['knowledge_post'] = KnowledgePostModel::where('category_id', $id)->get();
         return view('frontend.index', $data);
+    }
+
+    public function subscriber(Request $request)
+    {
+        $insert = new SubscriberModel();
+        $insert->subscriber_email = $request->newsletter;
+        $insert->save();
+
+        return redirect(url("/"))->with("message", "Success added to newsletter !");
     }
 }

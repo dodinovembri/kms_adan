@@ -8,10 +8,10 @@
 										<nav class="header-nav-top">
 											<ul class="nav nav-pills">
 												<li class="nav-item nav-item-anim-icon d-none d-md-block">
-													<a class="nav-link pl-0" href="about-us.html"><i class="fas fa-angle-right"></i> About Us</a>
+													<a class="nav-link pl-0" href="#"><i class="fas fa-angle-right"></i> About Us</a>
 												</li>
 												<li class="nav-item nav-item-anim-icon d-none d-md-block">
-													<a class="nav-link" href="contact-us.html"><i class="fas fa-angle-right"></i> Contact Us</a>
+													<a class="nav-link" href="#"><i class="fas fa-angle-right"></i> Contact Us</a>
 												</li>
 												<li class="nav-item nav-item-left-border nav-item-left-border-remove nav-item-left-border-sm-show">
 													<span class="ws-nowrap"><i class="fas fa-phone"></i> (123) 456-789</span>
@@ -52,23 +52,12 @@
 											<nav class="collapse">
 												<ul class="nav nav-pills" id="mainNav">
 													<li class="dropdown dropdown-mega">
-														<a class="dropdown-item dropdown-toggle active" href="{{ url('/') }}">
+														<a class="dropdown-item dropdown-toggle {{ (Request::is('/')) ? 'active' : '' }}" href="{{ url('/') }}">
 															Home
 														</a>
 													</li>
 													<li class="dropdown">
-														<a class="dropdown-item dropdown-toggle" href="#">
-															Features
-														</a>
-
-													</li>
-													<li class="dropdown">
-														<a class="dropdown-item dropdown-toggle" href="#">
-															Pages
-														</a>
-													</li>
-													<li class="dropdown">
-														<a class="dropdown-item dropdown-toggle" href="{{ url('frontend/operational_vehicle/index') }}">
+														<a class="dropdown-item dropdown-toggle {{ (Request::is('frontend/operational_vehicle/*')) ? 'active' : '' }}" href="{{ url('frontend/operational_vehicle/index') }}">
 															Operational Vehicle
 														</a>
 													</li>
@@ -88,7 +77,8 @@
 										<div class="header-nav-feature header-nav-features-search d-inline-flex">
 											<a href="#" class="header-nav-features-toggle" data-focus="headerSearch"><i class="fas fa-search header-nav-top-icon"></i></a>
 											<div class="header-nav-features-dropdown" id="headerTopSearchDropdown">
-												<form role="search" action="page-search-results.html" method="get">
+												<form role="search" action="{{ url('frontend/knowledge_post/search') }}" method="POST">
+													@csrf
 													<div class="simple-search input-group">
 														<input class="form-control text-1" id="headerSearch" name="q" type="search" value="" placeholder="Search...">
 														<span class="input-group-append">

@@ -26,6 +26,7 @@ class SocialMediaController extends Controller
     public $destroy = "backend/social_media/destroy";
 
     public $file_storage = "public/img/product";
+    public $column_hidden = [];
 
     public function __construct()
     {
@@ -34,6 +35,7 @@ class SocialMediaController extends Controller
 
     public function index()
     {
+        $data['column_hidden'] = $this->column_hidden;
         // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
@@ -72,6 +74,7 @@ class SocialMediaController extends Controller
      */
     public function create()
     {
+        $data['column_hidden'] = $this->column_hidden;
         // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
@@ -114,7 +117,12 @@ class SocialMediaController extends Controller
         $table_field = DB::select("DESCRIBE $table");
         $field_break = "created_at";
         $field_first = "id";
+        $column_hidden = [];
+
         foreach ($table_field as $key => $value) {
+            if (in_array($key, $column_hidden)) {
+                continue;
+            }
             if ($value->Field == $field_first){
                 continue;
             }
@@ -168,7 +176,7 @@ class SocialMediaController extends Controller
      */
     public function edit($id)
     {
-        // for breadcrumb
+        $data['column_hidden'] = $this->column_hidden;        
         $data['breadcrumb'] = array(
             "home"=>array(
                 "text"=>"Dashboard", 
@@ -215,7 +223,12 @@ class SocialMediaController extends Controller
         $table_field = DB::select("DESCRIBE $table");
         $field_break = "created_at";
         $field_first = "id";
+        $column_hidden = [];
+
         foreach ($table_field as $key => $value) {
+            if (in_array($key, $column_hidden)) {
+                continue;
+            }
             if ($value->Field == $field_first){
                 continue;
             }

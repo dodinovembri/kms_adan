@@ -25,6 +25,7 @@
                         <ul class="nav-second-level" aria-expanded="false">
                             <li class="nav-item"><a class="nav-link" href="{{ url('backend/knowledge_post/index') }}"><i class="ti-control-record"></i>Knowledge Post</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url('backend/operational_vehicle/index') }}"><i class="ti-control-record"></i>Operational Vehicle</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/subscriber/index') }}"><i class="ti-control-record"></i>Subscriber</a></li>
                         </ul>
                     </li> 
 
@@ -50,13 +51,7 @@
                         <a href="javascript: void(0);"><i data-feather="file-plus" class="align-self-center menu-icon"></i><span>Frontend</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li class="nav-item"><a class="nav-link" href="{{ url('backend/social_media/index') }}"><i class="ti-control-record"></i>Social Media</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/languange/index') }}"><i class="ti-control-record"></i>Languange</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/currency/index') }}"><i class="ti-control-record"></i>Currency</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/shop_information/index') }}"><i class="ti-control-record"></i>Shop Information</a></li>   
-                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/advantage/index') }}"><i class="ti-control-record"></i>Advantage</a></li>                         
                             <li class="nav-item"><a class="nav-link" href="{{ url('backend/contact_us/index') }}"><i class="ti-control-record"></i>Contact Us</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/partner/index') }}"><i class="ti-control-record"></i>Partner</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('backend/blog/index') }}"><i class="ti-control-record"></i>Blog</a></li>
                         </ul>
                     </li>            
                 </ul>

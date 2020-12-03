@@ -20,6 +20,9 @@
                             <form method="POST" action="{{ url($update, $id) }}" enctype="multipart/form-data">
                                 @csrf
                                 <?php foreach ($table_field as $key => $value) {
+                                    if (in_array($key, $column_hidden)) {
+                                        continue;
+                                    }
                                     if ($value->Field == $field_first){
                                         $id = $value->Field;
                                         continue;

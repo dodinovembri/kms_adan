@@ -21,6 +21,7 @@ Auth::routes([
 // Auth::routes();
 
 Route::get('/', 'FrontendController@index')->name('welcome');
+Route::post('/subscriber', 'FrontendController@subscriber')->name('subscriber');
 Route::get('/home', 'Backend\DashboardController@index')->name('dashboard');
 Route::get('/home/{id}', 'Backend\DashboardController@search')->name('search');
 Route::get('/backend', 'Backend\DashboardController@index')->name('dashboard');
@@ -47,6 +48,24 @@ Route::name('backend.')->group(function () {
 		Route::post('backend/social_media/update/{id}', 'Backend\SocialMediaController@update')->name('update');
 		Route::get('backend/social_media/destroy/{id}', 'Backend\SocialMediaController@destroy')->name('destroy');
 	});
+	Route::name('contact_us.')->group(function () {
+		Route::get('backend/contact_us/index', 'Backend\ContactUsController@index')->name('index');
+		Route::get('backend/contact_us/create', 'Backend\ContactUsController@create')->name('create');
+		Route::post('backend/contact_us/store', 'Backend\ContactUsController@store')->name('store');
+		Route::get('backend/contact_us/show/{id}', 'Backend\ContactUsController@show')->name('show');
+		Route::get('backend/contact_us/edit/{id}', 'Backend\ContactUsController@edit')->name('edit');
+		Route::post('backend/contact_us/update/{id}', 'Backend\ContactUsController@update')->name('update');
+		Route::get('backend/contact_us/destroy/{id}', 'Backend\ContactUsController@destroy')->name('destroy');
+	});
+	Route::name('subscriber.')->group(function () {
+		Route::get('backend/subscriber/index', 'Backend\SubscriberController@index')->name('index');
+		Route::get('backend/subscriber/create', 'Backend\SubscriberController@create')->name('create');
+		Route::post('backend/subscriber/store', 'Backend\SubscriberController@store')->name('store');
+		Route::get('backend/subscriber/show/{id}', 'Backend\SubscriberController@show')->name('show');
+		Route::get('backend/subscriber/edit/{id}', 'Backend\SubscriberController@edit')->name('edit');
+		Route::post('backend/subscriber/update/{id}', 'Backend\SubscriberController@update')->name('update');
+		Route::get('backend/subscriber/destroy/{id}', 'Backend\SubscriberController@destroy')->name('destroy');
+	});	
 	Route::name('category.')->group(function () {
 		Route::get('backend/category/index', 'Backend\CategoryController@index')->name('index');
 		Route::get('backend/category/create', 'Backend\CategoryController@create')->name('create');

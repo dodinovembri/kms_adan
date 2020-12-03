@@ -5,45 +5,37 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\KnowledgePostDetailModel;
-use App\Models\CategoryModel;
+use App\Models\SubscriberModel;
 use Illuminate\Support\Facades\Storage;
 
-class KnowledgePostDetailController extends Controller
+class SubscriberController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public $table = "knowledge_post_detail";
+    public $table = "subscriber";
 
-    public $index = "backend/knowledge_post_detail/index";
-    public $create = "backend/knowledge_post_detail/create";
-    public $store = "backend/knowledge_post_detail/store";
-    public $show = "backend/knowledge_post_detail/show";
-    public $edit = "backend/knowledge_post_detail/edit";
-    public $update = "backend/knowledge_post_detail/update";
-    public $destroy = "backend/knowledge_post_detail/destroy";
+    public $index = "backend/subscriber/index";
+    public $create = "backend/subscriber/create";
+    public $store = "backend/subscriber/store";
+    public $show = "backend/subscriber_detail/index";
+    public $edit = "backend/subscriber/edit";
+    public $update = "backend/subscriber/update";
+    public $destroy = "backend/subscriber/destroy";
 
-    public $file_storage = "public/img/knowledge_post_detail";
-    public $column_hidden = [1];
+    public $file_storage = "public/img/subscriber";
+    public $column_hidden = [];
 
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    public function index($id)
-    {        
-        session([
-            'knowledge_post_id' => $id            
-        ]);
-        $knowledge_post_id = session()->get('knowledge_post_id');
-
-        // column will be hidden
+    public function index()
+    {
         $data['column_hidden'] = $this->column_hidden;
-
         // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
@@ -51,24 +43,19 @@ class KnowledgePostDetailController extends Controller
                 "link"=>"home", 
                 "is_active"=>"inactive"
             ),
-            "knowledge_post"=>array(
-                "text"=>"Knowledge Post", 
-                "link"=>"backend/knowledge_post/index", 
-                "is_active"=>"inactive"
-            ),
-            "knowledge_post_detail"=>array(
-                "text"=>"Knowledge Post Detail", 
+            "subscriber"=>array(
+                "text"=>"Subscriber", 
                 "link"=>"", 
                 "is_active"=>"active"
-            )            
+            )
         );
-        $data['title'] = "Knowledge Post Detail";
+        $data['title'] = "Subscriber";
 
         // for route link
         $data['index'] = $this->index;
         $data['edit'] = $this->edit;
         // $data['show'] = $this->show;
-        $data['create'] = $this->create;
+        // $data['create'] = $this->create;
         $data['destroy'] = $this->destroy;
         
 
@@ -76,7 +63,7 @@ class KnowledgePostDetailController extends Controller
         $data['table_field'] = DB::select("DESCRIBE $table");
         $data['field_break'] = "created_at";
         $data['text_add'] = "Add New";
-        $data['table_data'] = KnowledgePostDetailModel::where('knowledge_post_id', $knowledge_post_id)->get();
+        $data['table_data'] = SubscriberModel::all();
 
         return view('backend.single_page.index', $data);
     }
@@ -88,14 +75,19 @@ class KnowledgePostDetailController extends Controller
      */
     public function create()
     {
-        // define dropdown
-        $dropdown[0] = CategoryModel::where('status', 1)->get();
-        $dropdown_option[0] = "category_name";
-
+        // column will be hidden
         $data['column_hidden'] = $this->column_hidden;
 
-        $data['dropdown'] = $dropdown;         
-        $data['dropdown_option'] = $dropdown_option;        
+        // define dropdown
+        // $dropdown[0] = CategoryModel::where('status', 1)->get();
+        // $dropdown_option[0] = "category_name";
+
+        // $data['dropdown'] = $dropdown;         
+        // $data['dropdown_option'] = $dropdown_option;    
+
+        // column will be hidden
+        $data['column_hidden'] = $this->column_hidden;
+
         // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
@@ -103,27 +95,21 @@ class KnowledgePostDetailController extends Controller
                 "link"=>"backend", 
                 "is_active"=>"inactive"
             ),
-            "knowledge_post"=>array(
-                "text"=>"Knowledge Post", 
-                "link"=>"backend/knowledge_post/index", 
-                "is_active"=>"inactive"
-            ),            
-            "knowledge_post_detail"=>array(
-                "text"=>"Knowledge Post Detail", 
-                "link"=>url($this->index, session()->get('knowledge_post_id')), 
+            "subscriber"=>array(
+                "text"=>"Subscriber", 
+                "link"=>$this->index, 
                 "is_active"=>"inactive"
             ),
-            "create_knowledge_post_detail"=>array(
-                "text"=>"Create Knowledge Post Detail", 
+            "create_subscriber"=>array(
+                "text"=>"Create Subscriber", 
                 "link"=>"#", 
                 "is_active"=>"active"
             )
         );
-        $data['title'] = "Create Knowledge Post Detail";
+        $data['title'] = "Create Subscriber";
 
         $data['store'] = $this->store;
-        $data['index'] = url($this->index, session()->get('knowledge_post_id'));
-
+        $data['index'] = $this->index;
         $table = $this->table;
         $data['table_field'] = DB::select("DESCRIBE $table");
         $data['field_first'] = "id";
@@ -143,7 +129,7 @@ class KnowledgePostDetailController extends Controller
         $table = $this->table;
         $table_field = DB::select("DESCRIBE $table");
         $field_break = "created_at";
-        $field_first = "id";    
+        $field_first = "id";
         $column_hidden = [];
 
         foreach ($table_field as $key => $value) {
@@ -159,9 +145,9 @@ class KnowledgePostDetailController extends Controller
             $arr_field[] = $value->Field;
             $arr_field_type[] = $value->Type;
             $count = count($arr_field); 
-        }        
+        }
 
-        $insert = new KnowledgePostDetailModel();
+        $insert = new SubscriberModel();
         for ($i=0; $i < $count; $i++) { 
             $text_type = $arr_field_type[$i];
             $text_check = substr($text_type,0,3);
@@ -175,13 +161,13 @@ class KnowledgePostDetailController extends Controller
                 }                
             }else{
                 $field_db = $arr_field[$i];            
-                $insert->$field_db = $i==0 ? session()->get('knowledge_post_id') : $request->$field_db;            
+                $insert->$field_db = $request->$field_db;            
             }           
         }        
         $insert->save();
 
         $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 
-        return redirect(url($this->index, session()->get('knowledge_post_id')))->with("message", "Success created $result !");
+        return redirect(url($this->index))->with("message", "Success created $result !");
     }
 
     /**
@@ -192,7 +178,7 @@ class KnowledgePostDetailController extends Controller
      */
     public function show($id)
     {
-        //
+        // 
     }
 
     /**
@@ -204,11 +190,11 @@ class KnowledgePostDetailController extends Controller
     public function edit($id)
     {
         // define dropdown
-        $dropdown[0] = CategoryModel::where('status', 1)->get();
-        $dropdown_option[0] = "category_name";
+        // $dropdown[0] = CategoryModel::where('status', 1)->get();
+        // $dropdown_option[0] = "category_name";
 
-        $data['dropdown'] = $dropdown;         
-        $data['dropdown_option'] = $dropdown_option; 
+        // $data['dropdown'] = $dropdown;         
+        // $data['dropdown_option'] = $dropdown_option; 
         $data['column_hidden'] = $this->column_hidden;
                 
         // for breadcrumb
@@ -218,20 +204,20 @@ class KnowledgePostDetailController extends Controller
                 "link"=>"backend", 
                 "is_active"=>"inactive"
             ),
-            "knowledge_post_detail"=>array(
-                "text"=>"Knowledge Post Detail", 
-                "link"=>url($this->index, session()->get('knowledge_post_id')), 
+            "subscriber"=>array(
+                "text"=>"Subscriber", 
+                "link"=>$this->index, 
                 "is_active"=>"inactive"
             ),
-            "edit_knowledge_post_detail"=>array(
-                "text"=>"Edit Knowledge Post Detail", 
+            "edit_subscriber"=>array(
+                "text"=>"Edit Subscriber", 
                 "link"=>"", 
                 "is_active"=>"active"
             )            
         );
-        $data['title'] = "Edit Knowledge Post Detail";
+        $data['title'] = "Edit Subscriber";
         $data['update'] = $this->update;
-        $data['index'] = url($this->index, session()->get('knowledge_post_id'));
+        $data['index'] = $this->index;
 
         $data['id'] = $id;
         $table = $this->table;
@@ -240,7 +226,7 @@ class KnowledgePostDetailController extends Controller
         $data['field_break'] = "created_at";
         $data['field_'] = "created_at";
 
-        $data['table_content'] = KnowledgePostDetailModel::find($id);
+        $data['table_content'] = SubscriberModel::find($id);
 
         return view('backend.single_page.edit', $data);
     }
@@ -258,7 +244,7 @@ class KnowledgePostDetailController extends Controller
         $table_field = DB::select("DESCRIBE $table");
         $field_break = "created_at";
         $field_first = "id";
-        $column_hidden = $this->column_hidden;
+        $column_hidden = [];
 
         foreach ($table_field as $key => $value) {
             if (in_array($key, $column_hidden)) {
@@ -275,7 +261,7 @@ class KnowledgePostDetailController extends Controller
             $count = count($arr_field); 
         }
 
-        $update = KnowledgePostDetailModel::find($id);
+        $update = SubscriberModel::find($id);
         for ($i=0; $i < $count; $i++) { 
             $text_type = $arr_field_type[$i];
             $text_check = substr($text_type,0,3);
@@ -295,7 +281,7 @@ class KnowledgePostDetailController extends Controller
         $update->update();
 
         $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 
-        return redirect(url($this->index, session()->get('knowledge_post_id')))->with("message", "Success updated $result !");
+        return redirect(url($this->index))->with("message", "Success updated $result !");
     }
 
     /**
@@ -306,10 +292,10 @@ class KnowledgePostDetailController extends Controller
      */
     public function destroy($id)
     {
-        $findtodelete = KnowledgePostDetailModel::find($id);
+        $findtodelete = SubscriberModel::find($id);
         $findtodelete->delete();
 
         $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 
-        return redirect(url($this->index, session()->get('knowledge_post_id')))->with("info", "Success deleted $result !");        
+        return redirect(url($this->index))->with("info", "Success deleted $result !");        
     }
 }

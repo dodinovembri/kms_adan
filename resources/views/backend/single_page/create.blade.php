@@ -70,7 +70,7 @@
                                     <?php }else if ($text_check == "tex") { ?>
                                         <div class="form-group row editor-label">
                                             <label class="col-xl-3 col-md-4"><span>*</span> {{ ucfirst($text_name) }}</label>
-                                                <textarea class="form-control col-xl-8 col-md-7" rows="5" name="{{ $text_ori }}"></textarea>
+                                                <textarea class="form-control col-xl-8 col-md-7" rows="5" name="{{ $text_ori }}" <?php if($is_required == 1) {echo "required";} ?> ></textarea>
                                         </div>                                    
                                     <?php }else if ($text_check == "tim") { ?>
 

@@ -38,6 +38,11 @@
 									<h4>Knowledge Post</h4>
 									<hr class="solid mt-3">
 									<div class="row">
+										<?php if (count($knowledge_post) < 1) { ?>
+											<div class="col-lg-4 mb-4">
+												<p>There is no knowledge posted.</p>
+											</div>
+										<?php } ?>
 										<?php foreach ($knowledge_post as $key => $value) { ?>
 											<div class="col-lg-4 mb-4">
 												<article class="post post-large pb-5">
@@ -54,8 +59,8 @@
 
 													<div class="post-content">
 
-														<h4><a href="{{ url('frontend/knowledge_post/show', $value->id) }}" class="text-decoration-none">{{ $value->knowledge_post_short_description }}</a></h4>
-														<p class="mb-1" style="text-align: justify;">{{ substr($value->knowledge_post_full_description, 0,100) }}</p>
+														<h4><a href="{{ url('frontend/knowledge_post/show', $value->id) }}" class="text-decoration-none">{{ $value->knowledge_post_title }}</a></h4>
+														<p class="mb-1" style="text-align: justify;">{{ substr($value->knowledge_post_short_description, 0,100) }}</p>
 														<a href="{{ url('frontend/knowledge_post/show', $value->id) }}" class="read-more text-color-dark font-weight-bold text-2">read more <i class="fas fa-chevron-right text-1 ml-1"></i></a>
 
 													</div>
