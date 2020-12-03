@@ -42,8 +42,8 @@
 											<div class="col-lg-4 mb-4">
 												<article class="post post-large pb-5">
 													<div class="post-image">
-														<a href="blog-post.html">
-															<img src="{{ asset(Storage::url('img/knowledge_post')) }}/{{ $value->knowledge_post_image }}" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0" alt="" />
+														<a href="{{ url('frontend/knowledge_post/show', $value->id) }}">
+															<img style="height: 150pt" src="{{ asset(Storage::url('img/knowledge_post')) }}/{{ $value->knowledge_post_image }}" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0" alt="" />
 														</a>
 													</div>
 
