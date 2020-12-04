@@ -196,6 +196,7 @@ class OperationalVehicleController extends Controller
 
         $data['dropdown'] = $dropdown;         
         $data['dropdown_option'] = $dropdown_option; 
+        $data['column_hidden'] = [0, 1];
                 
         // for breadcrumb
         $data['breadcrumb'] = array(
@@ -244,7 +245,7 @@ class OperationalVehicleController extends Controller
         $table_field = DB::select("DESCRIBE $table");
         $field_break = "created_at";
         $field_first = "id";
-        $column_hidden = [];
+        $column_hidden = [0, 1];
 
         foreach ($table_field as $key => $value) {
             if (in_array($key, $column_hidden)) {
