@@ -8,6 +8,7 @@ use App\Models\KnowledgePostModel;
 use App\Models\VehicleModel;
 use App\Models\SubscriberModel;
 use App\Models\UserModel;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -26,7 +27,7 @@ class DashboardController extends Controller
         $data['operational_vehicle_active_count'] = VehicleModel::where('status', 1)->count();
         $data['subscriber_count'] = SubscriberModel::count();
         $data['user_count'] = UserModel::count();
-                     
+
         return view('backend.dashboard.index', $data);
     }
 

@@ -9,7 +9,8 @@
 		<div class="row">
 			<div class="col-lg-3">
 				<aside class="sidebar">
-					<form action="search_result.php" method="get">
+					<form action="{{ url('frontend/knowledge_post/search') }}" method="POST">
+						@csrf
 						<div class="input-group mb-3 pb-1">
 							<input class="form-control text-1" placeholder="Search..." name="s" id="s" type="text">
 							<span class="input-group-append">
@@ -20,7 +21,7 @@
 					<h5 class="font-weight-bold pt-3">Categories</h5>
 					<ul class="nav nav-list flex-column">
 						<?php foreach ($category as $key => $value) { ?>
-							<li class="nav-item"><a class="nav-link" href="{{ url('home', $value->id) }}">{{ $value->category_name }}</a></li>
+							<li class="nav-item"><a class="nav-link" href="{{ url('frontend/knowledge_post/searchbyid', $value->id) }}">{{ $value->category_name }}</a></li>
 						<?php } ?>
 					</ul>
 				</aside>
