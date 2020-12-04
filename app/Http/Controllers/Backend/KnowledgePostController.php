@@ -189,7 +189,7 @@ class KnowledgePostController extends Controller
         $data['dropdown'] = $dropdown;         
         $data['dropdown_option'] = $dropdown_option; 
         
-        $data['column_hidden'] = [1, 3, 6];
+        $data['column_hidden'] = [1];
         // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
@@ -237,7 +237,12 @@ class KnowledgePostController extends Controller
         $table_field = DB::select("DESCRIBE $table");
         $field_break = "created_at";
         $field_first = "id";
+        $column_hidden = [1];
+
         foreach ($table_field as $key => $value) {
+            if (in_array($key, $column_hidden)) {
+                continue;
+            }
             if ($value->Field == $field_first){
                 continue;
             }
