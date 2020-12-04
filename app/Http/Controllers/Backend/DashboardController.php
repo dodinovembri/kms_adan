@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\KnowledgePostModel;
+use App\Models\VehicleModel;
+use App\Models\SubscriberModel;
+use App\Models\UserModel;
 
 class DashboardController extends Controller
 {
@@ -15,8 +19,15 @@ class DashboardController extends Controller
     public $category_table = "category";
 
     public function index()
-    {        
-        return view('backend.dashboard.index');
+    {
+        $data['knowledge_post_count'] = KnowledgePostModel::count();
+        $data['knowledge_post_active_count'] = KnowledgePostModel::where('status', 1)->count();
+        $data['operational_vehicle_count'] = VehicleModel::count();
+        $data['operational_vehicle_active_count'] = VehicleModel::where('status', 1)->count();
+        $data['subscriber_count'] = SubscriberModel::count();
+        $data['user_count'] = UserModel::count();
+                     
+        return view('backend.dashboard.index', $data);
     }
 
     /**

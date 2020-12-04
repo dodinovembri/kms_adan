@@ -12,7 +12,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <!-- App favicon -->
-        <link rel="shortcut icon" href="{{ asset('backend/default/assets/images/favicon.ico') }}">
+        <link rel="shortcut icon" href="{{ asset('img/logo2.jpeg') }}">
 
         <!-- App css -->
         <link href="{{ asset('backend/default/assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />

@@ -11,7 +11,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <!-- App favicon -->
-        <link rel="shortcut icon" href="{{ asset('backend/default/assets/images/favicon.ico')}}">
+        <link rel="shortcut icon" href="{{ asset('img/logo2.jpeg')}}">
 
         <!-- jvectormap -->
         <link href="{{ asset('backend/plugins/jvectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet">
