@@ -36,7 +36,6 @@ class ContactUsController extends Controller
     public function index()
     {
         $data['column_hidden'] = $this->column_hidden;
-        // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
                 "text"=>"Dashboard", 
@@ -75,20 +74,7 @@ class ContactUsController extends Controller
      */
     public function create()
     {
-        // column will be hidden
         $data['column_hidden'] = $this->column_hidden;
-
-        // define dropdown
-        // $dropdown[0] = CategoryModel::where('status', 1)->get();
-        // $dropdown_option[0] = "category_name";
-
-        // $data['dropdown'] = $dropdown;         
-        // $data['dropdown_option'] = $dropdown_option;    
-
-        // column will be hidden
-        $data['column_hidden'] = $this->column_hidden;
-
-        // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
                 "text"=>"Dashboard", 
@@ -189,15 +175,7 @@ class ContactUsController extends Controller
      */
     public function edit($id)
     {
-        // define dropdown
-        // $dropdown[0] = CategoryModel::where('status', 1)->get();
-        // $dropdown_option[0] = "category_name";
-
-        // $data['dropdown'] = $dropdown;         
-        // $data['dropdown_option'] = $dropdown_option; 
         $data['column_hidden'] = $this->column_hidden;
-                
-        // for breadcrumb
         $data['breadcrumb'] = array(
             "home"=>array(
                 "text"=>"Dashboard", 

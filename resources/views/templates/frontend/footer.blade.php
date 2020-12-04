@@ -15,7 +15,7 @@
 							<form action="{{ url('subscriber') }}" method="POST" class="mr-4 mb-3 mb-md-0">
 								@csrf
 								<div class="input-group input-group-rounded">
-									<input class="form-control form-control-sm bg-light" placeholder="Email Address" name="newsletter" id="newsletterEmail" type="text">
+									<input class="form-control form-control-sm bg-light" placeholder="Email Address" name="newsletter" id="newsletterEmail" type="email" required="">
 									<span class="input-group-append">
 										<button class="btn btn-light text-color-dark" type="submit"><strong>GO!</strong></button>
 									</span>
@@ -54,7 +54,7 @@
 					<div class="container py-2">
 						<div class="row py-4">
 							<div class="col-lg-1 d-flex align-items-center justify-content-center justify-content-lg-start mb-2 mb-lg-0">
-								<a href="index.html" class="logo pr-0 pr-lg-3">
+								<a href="{{ url('/') }}" class="logo pr-0 pr-lg-3">
 									<img alt="Porto Website Template" src="{{ asset('img/logo.png') }}" class="opacity-5" height="33">
 								</a>
 							</div>

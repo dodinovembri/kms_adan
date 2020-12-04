@@ -15,17 +15,24 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public $table = "category";
+    /*
+    | General setup
+    */
+    public $table           = "category";
+    public $column_hidden   = [];
+    public $file_storage    = "public/img/category";
 
-    public $index = "backend/category/index";
-    public $create = "backend/category/create";
-    public $store = "backend/category/store";
-    public $show = "backend/category/show";
-    public $edit = "backend/category/edit";
-    public $update = "backend/category/update";
+    /*
+    | Link crud
+    */
+    public $index   = "backend/category/index";
+    public $create  = "backend/category/create";
+    public $store   = "backend/category/store";
+    public $show    = "backend/category/show";
+    public $edit    = "backend/category/edit";
+    public $update  = "backend/category/update";
     public $destroy = "backend/category/destroy";
 
-    public $file_storage = "public/img/product";
 
     public function __construct()
     {
@@ -34,9 +41,8 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $data['column_hidden'] = [];
-
-        // for breadcrumb
+        $table = $this->table;
+        $data['column_hidden'] = $this->column_hidden;
         $data['breadcrumb'] = array(
             "home"=>array(
                 "text"=>"Dashboard", 
@@ -50,15 +56,10 @@ class CategoryController extends Controller
             )
         );
         $data['title'] = "Category";
-
-        // for route link
         $data['index'] = $this->index;
         $data['edit'] = $this->edit;
         $data['create'] = $this->create;
         $data['destroy'] = $this->destroy;
-        
-
-        $table = $this->table;
         $data['table_field'] = DB::select("DESCRIBE $table");
         $data['field_break'] = "created_at";
         $data['text_add'] = "Add New";
@@ -74,8 +75,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $data['column_hidden'] = [];
-        // for breadcrumb
+        $table = $this->table;
+        $data['column_hidden'] = $this->column_hidden;
         $data['breadcrumb'] = array(
             "home"=>array(
                 "text"=>"Dashboard", 
@@ -94,10 +95,8 @@ class CategoryController extends Controller
             )
         );
         $data['title'] = "Create Category";
-
         $data['store'] = $this->store;
         $data['index'] = $this->index;
-        $table = $this->table;
         $data['table_field'] = DB::select("DESCRIBE $table");
         $data['field_first'] = "id";
         $data['field_break'] = "created_at";        
@@ -114,10 +113,15 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $table = $this->table;
+        $column_hidden = [];
         $table_field = DB::select("DESCRIBE $table");
         $field_break = "created_at";
         $field_first = "id";
+
         foreach ($table_field as $key => $value) {
+            if (in_array($key, $column_hidden)) {
+                continue;
+            }
             if ($value->Field == $field_first){
                 continue;
             }
@@ -148,7 +152,7 @@ class CategoryController extends Controller
         }        
         $insert->save();
 
-        $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 
+        $result = preg_replace("/[^a-zA-Z]/", " ", $table); 
         return redirect(url($this->index))->with("message", "Success created $result !");
     }
 
@@ -171,7 +175,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        // for breadcrumb
+        $table = $this->table;
+        $data['column_hidden'] = $this->column_hidden;
         $data['breadcrumb'] = array(
             "home"=>array(
                 "text"=>"Dashboard", 
@@ -192,14 +197,11 @@ class CategoryController extends Controller
         $data['title'] = "Edit Category";
         $data['update'] = $this->update;
         $data['index'] = $this->index;
-
         $data['id'] = $id;
-        $table = $this->table;
         $data['table_field'] = DB::select("DESCRIBE $table");
         $data['field_first'] = "id";
         $data['field_break'] = "created_at";
         $data['field_'] = "created_at";
-
         $data['table_content'] = CategoryModel::find($id);
 
         return view('backend.single_page.edit', $data);
@@ -215,10 +217,15 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $table = $this->table;
+        $column_hidden = [];
         $table_field = DB::select("DESCRIBE $table");
         $field_break = "created_at";
         $field_first = "id";
+
         foreach ($table_field as $key => $value) {
+            if (in_array($key, $column_hidden)) {
+                continue;
+            }
             if ($value->Field == $field_first){
                 continue;
             }
@@ -261,10 +268,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        $table = $this->table;
         $findtodelete = CategoryModel::find($id);
         $findtodelete->delete();
 
-        $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 
+        $result = preg_replace("/[^a-zA-Z]/", " ", $table); 
         return redirect(url($this->index))->with("info", "Success deleted $result !");        
     }
 }
