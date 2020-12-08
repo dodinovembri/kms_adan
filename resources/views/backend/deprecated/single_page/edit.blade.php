@@ -19,35 +19,37 @@
                         <div class="card-body">
                             <form method="POST" action="{{ url($update, $id) }}" enctype="multipart/form-data">
                                 @csrf
-                            	<?php 
-                            		$j = 0;
-                            		foreach ($table_field as $key => $value) {
-                            			$field_table = $value->Field;
-                            			$field_type = $value->Type;
-                            			$field_null = $value->Null;
-
-                            		    if (in_array($key, $column_hidden)) { continue; }
-                            		    if ($field_table == $field_first) { continue; }
-                            		    if ($field_table == $field_break) { break; }
-
-                            		    $field_each_name = preg_replace("/[^a-zA-Z]/", " ", $field_table); 
-                            		    $arr_field_ori[] = $field_table;
-                            		    $arr_field_name[] = $field_each_name;
-                            		    $arr_field_type[] = $field_type;
-                            		    $arr_field_null[] = $field_null;
-                            		    $count = count($arr_field_name); 
-                            	}
-
-                            	for ($i=0; $i < $count; $i++) {
-                            	    $text_ori = $arr_field_ori[$i]; 
-                            	    $text_name = $arr_field_name[$i]; 
-                            	    $text_type = $arr_field_type[$i]; 
-                            	    $text_null = $arr_field_null[$i]; 
-                            	    $text_check = substr($text_type,0,3);
-
-                            	    if ($text_null == "NO") { $is_required = 1; }else{ $is_required = 0; }
-
-                                    if ($text_check == "big") { ?>
+                                <?php foreach ($table_field as $key => $value) {
+                                    if (in_array($key, $column_hidden)) {
+                                        continue;
+                                    }
+                                    if ($value->Field == $field_first){
+                                        $id = $value->Field;
+                                        continue;
+                                    }                                
+                                    if ($value->Field == $field_break){
+                                        break;
+                                    }                                            
+                                    $string = preg_replace("/[^a-zA-Z]/", " ", $value->Field); 
+                                    $arr_field_ori[] = $value->Field;
+                                    $arr_field_name[] = $string;
+                                    $arr_field_type[] = $value->Type;
+                                    $arr_field_null[] = $value->Null;
+                                    $count = count($arr_field_name); 
+                                } ?>
+                                <?php $j=0; ?>
+                                <?php for ($i=0; $i < $count; $i++) {
+                                    $text_ori = $arr_field_ori[$i]; 
+                                    $text_name = $arr_field_name[$i]; 
+                                    $text_type = $arr_field_type[$i]; 
+                                    $text_null = $arr_field_null[$i]; 
+                                    $text_check = substr($text_type,0,3);                                  
+                                    if ($text_null == "NO") {
+                                        $is_required = 1;
+                                    }else{
+                                        $is_required = 0;
+                                    }                                
+                                    if ($text_check == "int" || $text_check == "big") { ?>
                                         <div class="form-group row">
                                             <label for="validationCustom0" class="col-xl-3 col-md-4"><span>*</span> {{ ucfirst($text_name) }}</label>
                                             <?php if (isset($dropdown)) { $content = $dropdown_option[$j]; ?>
@@ -71,11 +73,8 @@
                                             <label class="col-xl-3 col-md-4"><span>*</span> {{ ucfirst($text_name) }}</label>
                                                 <textarea class="form-control col-xl-8 col-md-7" rows="5" name="{{ $text_ori }}">{{ $table_content->$text_ori }}</textarea>
                                         </div>                                    
-                                    <?php }else if ($text_check == "int") { ?>
-                                        <div class="form-group row">
-                                            <label for="validationCustom0" class="col-xl-3 col-md-4"><span>*</span> {{ ucfirst($text_name) }}</label>
-                                            <input class="form-control col-xl-8 col-md-7" id="validationCustom0" type="number" min="0" value="{{ $table_content->$text_ori }}" name="{{ $text_ori }}" <?php if($is_required == 1) {echo "required";} ?> >
-                                        </div>
+                                    <?php }else if ($text_check == "tim") { ?>
+
                                     <?php }else if ($text_check == "tin"){ ?>
                                         <div class="form-group row">
                                             <label for="validationCustom0" class="col-xl-3 col-md-4"><span>*</span> {{ ucfirst($text_name) }}</label>
@@ -104,8 +103,8 @@
                                             <label for="validationCustom0" class="col-xl-3 col-md-4"><span>*</span> {{ ucfirst($text_name) }}</label>
                                             <input type="date" class="form-control col-xl-8 col-md-7" id="validationCustom0" value="{{ $table_content->$text_ori }}" type="text" name="{{ $text_ori }}" <?php if($is_required == 1) {echo "required";} ?> >
                                         </div> 
-                                    <?php }
-                                } ?>
+                                    <?php } ?>
+                                <?php } ?>
                                 <div class="form-group row editor-label">
                                     <label class="col-xl-3 col-md-4"><span></span></label>
                                     <div class="col-xl-8 col-md-7 editor-space">
