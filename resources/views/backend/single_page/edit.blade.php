@@ -97,7 +97,7 @@
                                     <?php }elseif ($text_check == "cha") { ?>
                                         <div class="form-group row">
                                             <label for="validationCustom0" class="col-xl-3 col-md-4"><span>*</span> {{ ucfirst($text_name) }}</label>
-                                            <input type="file" class="form-control col-xl-8 col-md-7" id="validationCustom0" type="text" name="{{ $text_ori }}" <?php if($is_required == 1) {echo "required";} ?> >
+                                            <input type="file" class="form-control col-xl-8 col-md-7" id="validationCustom0" type="text" name="{{ $text_ori }}" >
                                         </div> 
                                     <?php } elseif ($text_check == "dat") { ?>
                                         <div class="form-group row">

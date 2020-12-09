@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\UserModel;
 use App\Models\CategoryModel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -16,55 +17,73 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public $table = "users";
+    /*
+    | General setup
+    */
+    public $table           = "users";
+    public $column_hidden   = [3, 4,5,6];
+    public $file_storage    = "public/img/user";
+    public $field_first     = "id";
+    public $field_break     = "created_at";
+    public $text_add        = "Add New";
 
-    public $index = "backend/user/index";
-    public $create = "backend/user/create";
-    public $store = "backend/user/store";
-    public $show = "backend/user_detail/index";
-    public $edit = "backend/user/edit";
-    public $update = "backend/user/update";
+    /*
+    | Link crud
+    */
+    public $base    = "home";
+    public $index   = "backend/user/index";
+    public $create  = "backend/user/create";
+    public $store   = "backend/user/store";
+    public $show    = "backend/user/show";
+    public $edit    = "backend/user/edit";
+    public $update  = "backend/user/update";
     public $destroy = "backend/user/destroy";
 
-    public $file_storage = "public/img/user";
 
     public function __construct()
     {
         $this->middleware('auth');
     }
 
+    public function dropdown()
+    {
+        // define dropdown
+        $dropdown[0] = DropdownSelectionModel::where('status', 1)->get();
+        $dropdown_option[0] = "dropdown_selection_name";
+
+        $data['dropdown'] = $dropdown;         
+        $data['dropdown_option'] = $dropdown_option;        
+    }    
+
     public function index()
     {
-        // column will be hidden
-        $data['column_hidden'] = [4, 5, 6];
-        // for breadcrumb
+        $table = $this->table;
+        $data['column_hidden'] = $this->column_hidden;
         $data['breadcrumb'] = array(
-            "home"=>array(
-                "text"=>"Dashboard", 
-                "link"=>"home", 
-                "is_active"=>"inactive"
+            "home" => array(
+                "text" => "Dashboard", 
+                "link" => $this->base,
+                "is_active" => "inactive"
             ),
-            "user"=>array(
-                "text"=>"User", 
-                "link"=>"", 
-                "is_active"=>"active"
+            "user" => array(
+                "text" => "User", 
+                "link" => "", 
+                "is_active" => "active"
             )
         );
         $data['title'] = "User";
-
-        // for route link
         $data['index'] = $this->index;
         $data['edit'] = $this->edit;
-        // $data['show'] = $this->show;
         $data['create'] = $this->create;
         $data['destroy'] = $this->destroy;
-        
-
-        $table = $this->table;
         $data['table_field'] = DB::select("DESCRIBE $table");
-        $data['field_break'] = "created_at";
-        $data['text_add'] = "Add New";
+        $data['field_break'] = $this->field_break;
+        $data['field_first'] = $this->field_first;
+        $data['text_add'] = $this->text_add;
         $data['table_data'] = UserModel::all();
+        $data['column_of_key'] = [];
+        $data['name_of_key'] = "";
+        $data['name_foreign'] = "";        
 
         return view('backend.single_page.index', $data);
     }
@@ -76,47 +95,30 @@ class UserController extends Controller
      */
     public function create()
     {
-        // column will be hidden
-        $data['column_hidden'] = [];
-
-        // define dropdown
-        // $dropdown[0] = CategoryModel::where('status', 1)->get();
-        // $dropdown_option[0] = "category_name";
-
-        // $data['dropdown'] = $dropdown;         
-        // $data['dropdown_option'] = $dropdown_option;    
-
-        // column will be hidden
-        $data['column_hidden'] = [];
-
-        // for breadcrumb
+        $table = $this->table;
+        $data['column_hidden'] = $this->column_hidden;
         $data['breadcrumb'] = array(
-            "home"=>array(
-                "text"=>"Dashboard", 
-                "link"=>"backend", 
-                "is_active"=>"inactive"
+            "home" => array(
+                "text" => "Dashboard", 
+                "link" => $this->base,
+                "is_active" => "inactive"
             ),
-            "user"=>array(
-                "text"=>"User", 
-                "link"=>$this->index, 
-                "is_active"=>"inactive"
+            "user" => array(
+                "text" => "User", 
+                "link" => $this->index, 
+                "is_active" => "inactive"
             ),
-            "create_user"=>array(
-                "text"=>"Create User", 
-                "link"=>"#", 
-                "is_active"=>"active"
+            "create_user" => array(
+                "text" => "Create User", 
+                "link" => "#", 
+                "is_active" => "active"
             )
         );
         $data['title'] = "Create User";
-
         $data['store'] = $this->store;
-        $data['index'] = $this->index;
-        $table = $this->table;
-        $data['table_field'] = DB::select("DESCRIBE $table");
-        $data['field_first'] = "id";
-        $data['field_break'] = "created_at";        
+        $data['index'] = $this->index;     
 
-        return view('backend.single_page.create', $data);
+        return view('backend.user.create', $data);
     }
 
     /**
@@ -128,47 +130,35 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $table = $this->table;
-        $table_field = DB::select("DESCRIBE $table");
-        $field_break = "created_at";
-        $field_first = "id";
-        $column_hidden = [];
+        $index = $this->index;
+        $result = preg_replace("/[^a-zA-Z]/", " ", $table); 
 
-        foreach ($table_field as $key => $value) {
-            if (in_array($key, $column_hidden)) {
-                continue;
-            }
-            if ($value->Field == $field_first){
-                continue;
-            }
-            if ($value->Field == $field_break){
-                break;
-            }                                            
-            $arr_field[] = $value->Field;
-            $arr_field_type[] = $value->Type;
-            $count = count($arr_field); 
+        $column_hidden = [];
+        $table_field = DB::select("DESCRIBE $table");
+        $field_first = $this->field_first;        
+        $field_break = $this->field_break;        
+        $storage = $this->file_storage;
+
+        if ($request->input('password') != $request->input('password_confirm')) {
+            return redirect(url($index))->with("error", "Your password doesnt match !");
+        }else{
+            $check = UserModel::where('email', $request->input('email'))->first();
+            if (empty($check)) {
+                $insert = new UserModel();
+                $insert->name = $request->name;        
+                $insert->email = $request->email;        
+                $insert->password = Hash::make($request->password);                       
+                $insert->created_at = date("Y-m-d H:i:s");
+                $insert->save();
+
+                return redirect(url($index))->with("message", "Success adding new $result !");
+            }else{
+                return redirect(url($index))->with("error", "$result already exist !");            
+            }    
         }
 
-        $insert = new UserModel();
-        for ($i=0; $i < $count; $i++) { 
-            $text_type = $arr_field_type[$i];
-            $text_check = substr($text_type,0,3);
-            if ($text_check == "cha") {
-                if (!empty($request->file( $arr_field[$i]))) {
-                    $file                       = $request->file($arr_field[$i]);
-                    $fileName3                  = uniqid() . '.'. $file->getClientOriginalExtension();
-                    $path = Storage::putFileAs($this->file_storage, $request->file($arr_field[$i]), $fileName3);
-                    $field_db = $arr_field[$i]; 
-                    $insert->$field_db = $fileName3;
-                }                
-            }else{
-                $field_db = $arr_field[$i];            
-                $insert->$field_db = $request->$field_db;            
-            }           
-        }        
-        $insert->save();
-
-        $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 
-        return redirect(url($this->index))->with("message", "Success created $result !");
+        $result = preg_replace("/[^a-zA-Z]/", " ", $table); 
+        return redirect(url($index))->with("message", "Success created $result !");
     }
 
     /**
@@ -179,7 +169,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        // 
+        //
     }
 
     /**
@@ -190,45 +180,32 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        // define dropdown
-        // $dropdown[0] = CategoryModel::where('status', 1)->get();
-        // $dropdown_option[0] = "category_name";
-
-        // $data['dropdown'] = $dropdown;         
-        // $data['dropdown_option'] = $dropdown_option; 
-                
-        // for breadcrumb
+        $table = $this->table;
+        $data['column_hidden'] = $this->column_hidden;
         $data['breadcrumb'] = array(
-            "home"=>array(
-                "text"=>"Dashboard", 
-                "link"=>"backend", 
-                "is_active"=>"inactive"
+            "home" => array(
+                "text" => "Dashboard", 
+                "link" => $this->base,
+                "is_active" => "inactive"
             ),
-            "user"=>array(
-                "text"=>"User", 
-                "link"=>$this->index, 
-                "is_active"=>"inactive"
+            "user" => array(
+                "text" => "User", 
+                "link" => $this->index, 
+                "is_active" => "inactive"
             ),
-            "edit_user"=>array(
-                "text"=>"Edit User", 
-                "link"=>"", 
-                "is_active"=>"active"
+            "edit_user" => array(
+                "text" => "Edit User", 
+                "link" => "", 
+                "is_active" => "active"
             )            
         );
         $data['title'] = "Edit User";
         $data['update'] = $this->update;
         $data['index'] = $this->index;
-
         $data['id'] = $id;
-        $table = $this->table;
-        $data['table_field'] = DB::select("DESCRIBE $table");
-        $data['field_first'] = "id";
-        $data['field_break'] = "created_at";
-        $data['field_'] = "created_at";
+        $data['user'] = UserModel::find($id);
 
-        $data['table_content'] = UserModel::find($id);
-
-        return view('backend.single_page.edit', $data);
+        return view('backend.user.edit', $data);
     }
 
     /**
@@ -241,47 +218,31 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $table = $this->table;
-        $table_field = DB::select("DESCRIBE $table");
-        $field_break = "created_at";
-        $field_first = "id";
+        $index = $this->index;
+        $result = preg_replace("/[^a-zA-Z]/", " ", $table); 
+
         $column_hidden = [];
+        $table_field = DB::select("DESCRIBE $table");
+        $field_break = $this->field_break;
+        $field_first = $this->field_first;
+        $storage = $this->file_storage;
 
-        foreach ($table_field as $key => $value) {
-            if (in_array($key, $column_hidden)) {
-                continue;
-            }
-            if ($value->Field == $field_first){
-                continue;
-            }
-            if ($value->Field == $field_break){
-                break;
-            }                                            
-            $arr_field[] = $value->Field;
-            $arr_field_type[] = $value->Type;
-            $count = count($arr_field); 
-        }
+        if ($request->input('password') != $request->input('password_confirm')) {
+            return redirect(url($index))->with("error", "Your password doesnt match !");
+        }else{
+            $check = UserModel::where('email', $request->input('email'))->first();
+            if (empty($check)) {
+                $update = UserModel::find($id);
+                $update->name = $request->name;  
+                $update->password = Hash::make($request->password);                       
+                $update->updated_at = date("Y-m-d H:i:s");
+                $update->update();
 
-        $update = UserModel::find($id);
-        for ($i=0; $i < $count; $i++) { 
-            $text_type = $arr_field_type[$i];
-            $text_check = substr($text_type,0,3);
-            if ($text_check == "cha") {
-                if (!empty($request->file( $arr_field[$i]))) {
-                    $file                       = $request->file($arr_field[$i]);
-                    $fileName3                  = uniqid() . '.'. $file->getClientOriginalExtension();
-                    $path = Storage::putFileAs($this->file_storage, $request->file($arr_field[$i]), $fileName3);
-                    $field_db = $arr_field[$i]; 
-                    $update->$field_db = $fileName3;
-                }                
+                return redirect(url($index))->with("message", "Success updating $result !");
             }else{
-                $field_db = $arr_field[$i];            
-                $update->$field_db = $request->$field_db;            
-            }             
-        }        
-        $update->update();
-
-        $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 
-        return redirect(url($this->index))->with("message", "Success updated $result !");
+                return redirect(url($index))->with("error", "$result already exist !");            
+            }    
+        }
     }
 
     /**
@@ -292,10 +253,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $table = $this->table;
+        $index = $this->index;
+
         $findtodelete = UserModel::find($id);
         $findtodelete->delete();
 
-        $result = preg_replace("/[^a-zA-Z]/", " ", $this->table); 
+        $result = preg_replace("/[^a-zA-Z]/", " ", $table); 
         return redirect(url($this->index))->with("info", "Success deleted $result !");        
     }
 }

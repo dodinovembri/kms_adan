@@ -32,17 +32,17 @@ class OperationalVehicleController extends Controller
     public function show($id)
     {
         $data['operational_vehicle'] = VehicleModel::find($id);
-        $data['vehicle_dimension'] = VehicleDimensionModel::with('meassure')->where('id', $id)->first();
-        $data['vehicle_engine'] = VehicleEngineModel::with('driver')->with('fuel')->where('id', $id)->first();
-        $data['vehicle_performance'] = VehiclePerformanceModel::find($id);
-        $data['vehicle_suspention'] = VehicleSuspentionModel::find($id);
-        $data['vehicle_velg_tire'] = VehicleVelgTireModel::find($id);
-        $data['vehicle_active_safety'] = VehicleActiveSafetyModel::find($id);
-        $data['vehicle_passive_safety'] = VehiclePassiveSafetyModel::find($id);
-        $data['vehicle_security'] = VehicleSecurityModel::find($id);
-        $data['vehicle_comfort'] = VehicleComfortModel::find($id);
-        $data['vehicle_exterior'] = VehicleExteriorModel::find($id);
-        $data['vehicle_communication'] = VehicleCommunicationModel::find($id);
+        $data['vehicle_dimension'] = VehicleDimensionModel::with('meassure')->where('vehicle_id', $id)->first();
+        $data['vehicle_engine'] = VehicleEngineModel::with('driver')->with('fuel')->where('vehicle_id', $id)->first();
+        $data['vehicle_performance'] = VehiclePerformanceModel::where('vehicle_id', $id)->first();
+        $data['vehicle_suspention'] = VehicleSuspentionModel::where('vehicle_id', $id)->first();
+        $data['vehicle_velg_tire'] = VehicleVelgTireModel::where('vehicle_id', $id)->first();
+        $data['vehicle_active_safety'] = VehicleActiveSafetyModel::where('vehicle_id', $id)->first();
+        $data['vehicle_passive_safety'] = VehiclePassiveSafetyModel::where('vehicle_id', $id)->first();
+        $data['vehicle_security'] = VehicleSecurityModel::where('vehicle_id', $id)->first();
+        $data['vehicle_comfort'] = VehicleComfortModel::where('vehicle_id', $id)->first();
+        $data['vehicle_exterior'] = VehicleExteriorModel::where('vehicle_id', $id)->first();
+        $data['vehicle_communication'] = VehicleCommunicationModel::where('vehicle_id', $id)->first();
 
         return view('frontend.operational_vehicle.show', $data);
     }

@@ -21,7 +21,7 @@
 										</a>
 										<a href="{{ url('frontend/operational_vehicle/show', $value->id) }}">
 											<span class="product-thumb-info-image">
-												<img alt="" class="img-fluid" src="{{ asset(Storage::url('img/vehicle')) }}/{{ $value->vehicle_image }}" style="height: 140px;">
+												<img alt="" class="img-fluid" src="{{ asset(Storage::url('img/operational_vehicle')) }}/{{ $value->vehicle_image }}" style="height: 140px;">
 											</span>
 										</a>
 										<span class="product-thumb-info-content product-thumb-info-content pl-0 bg-color-light">

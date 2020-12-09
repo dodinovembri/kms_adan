@@ -73,6 +73,7 @@ class OperationalVehicleController extends Controller
         $data['title'] = "Vehicle";
         $data['index'] = $this->index;
         $data['edit'] = $this->edit;
+        $data['show'] = "backend/operational_vehicle_detail/index";
         $data['create'] = $this->create;
         $data['destroy'] = $this->destroy;
         $data['table_field'] = DB::select("DESCRIBE $table");
@@ -80,6 +81,9 @@ class OperationalVehicleController extends Controller
         $data['field_first'] = $this->field_first;
         $data['text_add'] = $this->text_add;
         $data['table_data'] = VehicleModel::all();
+        $data['column_of_key'] = [];
+        $data['name_of_key'] = "";
+        $data['name_foreign'] = "";        
 
         return view('backend.single_page.index', $data);
     }

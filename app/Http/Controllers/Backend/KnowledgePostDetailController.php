@@ -90,6 +90,9 @@ class KnowledgePostDetailController extends Controller
         $data['field_first'] = $this->field_first;
         $data['text_add'] = $this->text_add;
         $data['table_data'] = KnowledgePostDetailModel::where('knowledge_post_id', $knowledge_post_id)->get();
+        $data['column_of_key'] = [];
+        $data['name_of_key'] = "";
+        $data['name_foreign'] = "";
 
         return view('backend.single_page.index', $data);
     }

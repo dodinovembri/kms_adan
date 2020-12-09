@@ -80,7 +80,12 @@ class KnowledgePostController extends Controller
         $data['field_break'] = $this->field_break;
         $data['field_first'] = $this->field_first;
         $data['text_add'] = $this->text_add;
-        $data['table_data'] = KnowledgePostModel::all();
+
+        $data['table_data'] = KnowledgePostModel::with('category')->get();
+        $data['column_of_key'] = [0];
+        $data['name_of_key'] = "category";
+        $data['name_foreign'] = "category_name";
+
 
         return view('backend.single_page.index', $data);
     }
